@@ -23,6 +23,8 @@ namespace Cretu_Alexandru_Lab2.Pages.Books
         {
             ViewData["PublisherID"] = new SelectList(_context.Set<Publisher>(), "ID","PublisherName");
 
+            ViewData["AuthorID"] = new SelectList(_context.Set<Author>(), "ID", "FullName");
+
             var book = new Book();
             book.BookCategories = new List<BookCategory>();
             PopulateAssignedCategoryData(_context, book);
@@ -48,17 +50,13 @@ namespace Cretu_Alexandru_Lab2.Pages.Books
                     newBook.BookCategories.Add(catToAdd);
                 }
             }
-            if (await TryUpdateModelAsync<Book>(
-            newBook,
-            "Book",
-            i => i.Title, i => i.Author,
-            i => i.Price, i => i.PublishingDate, i => i.PublisherID))
-            {
-                _context.Book.Add(newBook);
+
+            Book.BookCategories = newBook.BookCategories;
+                _context.Book.Add(Book);
                 await _context.SaveChangesAsync();
                 return RedirectToPage("./Index");
-            }
-            PopulateAssignedCategoryData(_context, newBook);
+            
+            PopulateAssignedCategoryData(_context, Book);
             return Page();
         }
 

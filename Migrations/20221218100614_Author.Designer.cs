@@ -4,6 +4,7 @@ using Cretu_Alexandru_Lab2.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cretu_Alexandru_Lab2.Migrations
 {
     [DbContext(typeof(Cretu_Alexandru_Lab2Context))]
-    partial class Cretu_Alexandru_Lab2ContextModelSnapshot : ModelSnapshot
+    [Migration("20221218100614_Author")]
+    partial class Author
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,7 +54,7 @@ namespace Cretu_Alexandru_Lab2.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
 
-                    b.Property<int?>("AuthorID")
+                    b.Property<int>("AuthorID")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Price")
@@ -138,7 +140,9 @@ namespace Cretu_Alexandru_Lab2.Migrations
                 {
                     b.HasOne("Cretu_Alexandru_Lab2.Models.Author", "Author")
                         .WithMany("Books")
-                        .HasForeignKey("AuthorID");
+                        .HasForeignKey("AuthorID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Cretu_Alexandru_Lab2.Models.Publisher", "Publisher")
                         .WithMany("Books")
