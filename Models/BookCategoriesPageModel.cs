@@ -6,12 +6,18 @@ namespace Cretu_Alexandru_Lab2.Models
     public class BookCategoriesPageModel:PageModel
     {
         public List<AssignedCategoryData> AssignedCategoryDataList;
-        public void PopulateAssignedCategoryData(Cretu_Alexandru_Lab2Context context,
-        Book book)
+        public void PopulateAssignedCategoryData(Cretu_Alexandru_Lab2Context context,Book book)
         {
             var allCategories = context.Category;
-            var bookCategories = new HashSet<int>(
-            book.BookCategories.Select(c => c.CategoryID)); //
+
+
+            var bookCategories = new HashSet<int>(); //
+            if (book.BookCategories != null)
+            {
+                bookCategories = new HashSet<int>(book.BookCategories.Select(c => c.CategoryID)); //
+            }
+
+            
             AssignedCategoryDataList = new List<AssignedCategoryData>();
             foreach (var cat in allCategories)
             {
